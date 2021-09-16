@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val keveropult = findViewById<Button>(R.id.asd)
         keveropult.setOnClickListener{
-            Toast.makeText(this@MainActivity,"Végre jó",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this@MainActivity,"Végre jó",Toast.LENGTH_LONG).show();
         }
     }
 }
