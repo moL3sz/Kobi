@@ -30,7 +30,7 @@ class Main : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
         //check if the token already exists
-        if(!readTokenFromFile()){
+        if(!readTokenFromFile(this)){
             val FIRST_TOKEN : String = createToken()
            saveTokenToDevice(FIRST_TOKEN,this)
 

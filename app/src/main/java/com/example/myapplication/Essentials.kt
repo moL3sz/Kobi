@@ -89,34 +89,21 @@ fun createToken() : String{
     }
     return token;
 }
-fun readTokenFromFile() : Boolean{
+fun readTokenFromFile(ctx : Context) : Boolean{
     try {
         //
         //default path for token : assets/LOCAL_TOKEN
-        val TOKEN_FILE : File = File("/data/user/0/com.example.myapplication/LOCAL_TOKEN.dat")
-        Log.i("Essentials","JUJUUUU")
-        val fis : FileInputStream = FileInputStream(TOKEN_FILE)
-        val in_ : DataInputStream = DataInputStream(fis)
-        val br : BufferedReader = BufferedReader( InputStreamReader(in_))
-        Log.i("Essentials","JUJUUUU")
+        val inputStream: InputStream = ctx.openFileInput("LOCAL_TOKEN.dat")
+        val inputStreamReader = InputStreamReader(inputStream)
+        val bufferedReader = BufferedReader(inputStreamReader)
         //kiolvasssuk a tokent a filebol (FLAG)
         //ha van benne valami vagy egyátalán létezik a cucc,
         //akkor visszatérünk trueval, minden más esetben falseal (true -> regisztrált már vagy loginolt valaha)
 
         var strLine : String = ""
         var READ_TOKEN : String = ""
-        while (true){
-            strLine = br.readLine()
-            if(strLine == null){
-                break;
-            }
-            READ_TOKEN = strLine
-        }
-        Log.i("Essentials",READ_TOKEN)
-        br.close()
-        in_.close()
-        fis.close()
-        Log.i("Essentials",READ_TOKEN)
+        strLine = bufferedReader.readLine()
+        READ_TOKEN = strLine
         return READ_TOKEN != ""
     }
     catch(e: IOException){
