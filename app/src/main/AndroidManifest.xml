@@ -12,9 +12,10 @@
         android:label="Köbi"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication">
+        android:theme="@style/Theme.MyApplication"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".Keveropult"
+            android:name=".Main"
             android:exported="true"
             android:screenOrientation="fullSensor">
             <intent-filter>
@@ -23,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main"></activity>
+       <!-- <activity android:name=".Main"></activity>-->
         <activity
             android:name=".LoginActivity"
             android:exported="true"

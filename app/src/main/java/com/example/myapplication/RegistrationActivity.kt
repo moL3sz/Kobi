@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.essentials._Request
 import java.time.Instant
 
 class RegistrationActivity : AppCompatActivity(){
@@ -21,6 +22,8 @@ class RegistrationActivity : AppCompatActivity(){
         val sendRegButton = findViewById<Button>(R.id.sendregbutton);
         sendRegButton.setOnClickListener {
             //send reg request to the server ... handling in Essentials.kt
+            val req = _Request(this)
+            req.registrateRequest("hello","world", "123456789", "asd")
 
         }
 

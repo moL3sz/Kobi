@@ -1,5 +1,6 @@
 package com.example.essentials
-import android.content.Context
+import android.R.attr
+import android.app.DownloadManager
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
@@ -7,59 +8,82 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import java.io.*
+import java.lang.Exception
 import kotlin.random.Random
+import android.R.attr.data
+import android.content.Context
+import kotlin.io.path.Path
 
 
 class _Request(ctx : AppCompatActivity){
     var contex : AppCompatActivity
-    val API_URL : String = "http://google.com"
+    val API_URL : String = "http://172.22.8.68:4000"
     val queue  = Volley.newRequestQueue(ctx);
     init{
         contex = ctx;
     }
     @RequiresApi(Build.VERSION_CODES.M)
-    fun loginRequest(username: String, password: String, token: String){
+    fun loginRequest(username: String, password: String, token: String) : Boolean{
         try{
-            //valamiért ez a geci nem működik, majd akkor kitalálunk valamit rá
-            //alapvetőleg külső szerverre küld requestet de saját LAN serverre nem, idk miér
-            val req = StringRequest(Request.Method.GET,API_URL, { response ->
-                Toast.makeText(contex,"Response is ${response.substring(0,500)}",Toast.LENGTH_LONG).show();
-            },
-                {
-                    Toast.makeText(contex, "Nope",Toast.LENGTH_LONG).show();
-                })
-            queue.add(req);
+            val stringRequest: StringRequest = object : StringRequest( Method.POST, API_URL + "/login",
+                    Response.Listener { response ->
+                        try {
+                            val res = response.toString()
+                            if(res == "200"){
+                                Toast.makeText(contex, "Sikeresen bejelentkeztél",Toast.LENGTH_LONG).show()
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    },
+                    Response.ErrorListener { error ->
+                        Toast.makeText(contex, error.toString(), Toast.LENGTH_LONG).show()
+                    }) {
+                override fun getParams(): Map<String, String> {
+                    val params: MutableMap<String, String> = HashMap()
+                    //Change with your post params
+                    params["username"] = username
+                    params["password"] = password
+                    return params
+                }
+            }
+            queue.add(stringRequest)
         }
         catch (e: Exception){
             e.printStackTrace()
         }
+        return false
 
     }
     fun registrateRequest(username: String, password: String, token: String, email : String){
         try {
-            val req = StringRequest(
-                Request.Method.POST, API_URL,
-                { response ->
-                    {
-                        //TODO handle response (JSON) from the API
+            val stringRequest: StringRequest = object : StringRequest( Method.POST, API_URL + "/registrate",
+                    Response.Listener { response ->
+                        Toast.makeText(contex, response, Toast.LENGTH_LONG).show()
+                        try {
 
-                        //ide kell majd valamit csinálunk
-                        //azaz ha jön a szervertől válasz -> fasza vagy benne vagy az adatbázisban
-                        //akkor vissza kerül a login layoutba ahol be tud jelentkezni
-                        //talán meg lehetne csinálni automatication a logint, regisztáció után is
-
-
-
-
-                    }
-                },
-                {
-                    Toast.makeText(contex, "ELbasztunk valamit", Toast.LENGTH_SHORT)
-                },
-                );
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    },
+                    Response.ErrorListener { error ->
+                        Toast.makeText(contex, error.toString(), Toast.LENGTH_LONG).show()
+                    }) {
+                override fun getParams(): Map<String, String> {
+                    val params: MutableMap<String, String> = HashMap()
+                    //Change with your post params
+                    params["username"] = username
+                    params["password"] = password
+                    return params
+                }
+            }
+            queue.add(stringRequest)
 
         }
         catch (e: Exception){
