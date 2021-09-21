@@ -58,6 +58,9 @@ class _Request(ctx : AppCompatActivity){
                         //akkor vissza kerül a login layoutba ahol be tud jelentkezni
                         //talán meg lehetne csinálni automatication a logint, regisztáció után is
 
+
+
+
                     }
                 },
                 {

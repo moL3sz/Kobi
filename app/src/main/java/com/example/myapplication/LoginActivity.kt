@@ -38,11 +38,7 @@ class LoginActivity : AppCompatActivity(){
                 Kérdés?:
                 Login után legyen meg a token először, vagy regisztráció után  vagy tökmindegy
                 (Át kell gondolni)
-
-
              */
-
-
             //Majd az azonosítás is a szerveren fog történni, Sima lekérdezés alapján
 
             if (testUsername == email && password == testPassword) {

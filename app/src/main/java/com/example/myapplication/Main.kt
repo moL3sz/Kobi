@@ -33,7 +33,6 @@ class Main : AppCompatActivity(){
         if(!readTokenFromFile(this)){
             val FIRST_TOKEN : String = createToken()
            saveTokenToDevice(FIRST_TOKEN,this)
-
         }
         else{
             Log.i("TOKEN","Megtalálva")
