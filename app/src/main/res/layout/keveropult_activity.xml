@@ -32,6 +32,7 @@
 
             <TextView
                 android:id="@+id/sor"
+                android:fontFamily="sans-serif-smallcaps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sör"
@@ -69,6 +70,54 @@
                 android:text="Gin"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/vodka"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vodka"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/abszint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Abszint"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/vermut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vermut"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/konyak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Konyak"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tequila"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tequila"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/likor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Likőr"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
         </LinearLayout>
     </ScrollView>
 
