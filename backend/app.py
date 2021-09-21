@@ -1,6 +1,7 @@
 from logging import debug
 from flask import Flask, request, url_for
 from security.hash import compareHashPassword, hashPassword
+from security.tokenAuth import loginUser
 from dbManager import addUser
 
 
@@ -13,7 +14,14 @@ app = Flask(__name__)
 
 @app.route("/login",methods=["POST"])
 def login():
-
+    try:
+        pass
+        username = request.form["username"]
+        password = request.form["password"]
+        return "200" if loginUser("asf",username,password) else "403"
+    except Exception as e:
+        raise e
+    return "401"
     pass
 
 

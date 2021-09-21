@@ -2,15 +2,18 @@ package com.example.myapplication
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.essentials._Request
 
 class LoginActivity : AppCompatActivity(){
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val testUsername: String = "hello"
@@ -26,26 +29,15 @@ class LoginActivity : AppCompatActivity(){
             //Toast.makeText(this@Main, checkForInternet(cm).toString(),Toast.LENGTH_LONG).show();
             val req = _Request(this)
 
-            //req.loginRequest(username = "hello", password = "jelszo", token = "TOken")
+            req.loginRequest(username = "hello", password = "world", token = "TOken")
 
 
             //Le kapjuk a input fieldeknek az értékeit
-            val email = findViewById<EditText>(R.id.loginInput).text.toString()
-            val password = findViewById<EditText>(R.id.passwordInput).text.toString()
+            //val email = findViewById<EditText>(R.id.loginInput).text.toString()
+           // val password = findViewById<EditText>(R.id.passwordInput).text.toString()
 
-            /*
-                test: csak nézzük meg szimplán hogy milyen lesz a auth
-                Kérdés?:
-                Login után legyen meg a token először, vagy regisztráció után  vagy tökmindegy
-                (Át kell gondolni)
-             */
-            //Majd az azonosítás is a szerveren fog történni, Sima lekérdezés alapján
 
-            if (testUsername == email && password == testPassword) {
-                Toast.makeText(this, "Bejelentkeztél!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Beszoptad", Toast.LENGTH_SHORT).show()
-            }
+
 
 
         }

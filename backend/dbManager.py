@@ -2,6 +2,13 @@ import sqlite3
 from typing import List
 
 #TODO kell egy uj db manager a phpmyadmin mysql serverhez
+
+
+#
+
+
+def listTokens():
+    pass
 def createCursor():
     db = sqlite3.connect("test.db")
     return db.cursor(),db
