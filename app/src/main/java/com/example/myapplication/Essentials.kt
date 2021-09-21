@@ -1,6 +1,5 @@
 package com.example.essentials
-import android.R.attr
-import android.app.DownloadManager
+import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
@@ -8,16 +7,10 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import java.io.*
-import java.lang.Exception
 import kotlin.random.Random
-import android.R.attr.data
-import android.content.Context
-import kotlin.io.path.Path
 
 
 class _Request(ctx : AppCompatActivity){

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".Main"
+            android:name=".Keveropult"
             android:exported="true"
             android:screenOrientation="fullSensor">
             <intent-filter>
@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Main"></activity>
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -37,6 +38,14 @@
             >
 
         </activity>
+
+        <!--<activity
+            android:name=".Keveropult"
+            android:exported="true"
+            android:screenOrientation="fullSensor"
+            >
+
+        </activity>-->
     </application>
 
 </manifest>
