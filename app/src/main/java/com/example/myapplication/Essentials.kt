@@ -17,9 +17,9 @@ import java.lang.Exception
 import kotlin.random.Random
 import android.R.attr.data
 import android.content.Context
+import android.graphics.Rect
+import android.widget.ImageView
 import kotlin.io.path.Path
-
-
 class _Request(ctx : AppCompatActivity){
     var contex : AppCompatActivity
     val API_URL : String = "http://172.22.8.68:4000"
@@ -147,3 +147,19 @@ fun saveTokenToDevice(token: String,ctx : Context){
         e.printStackTrace()
     }
 }
+
+
+fun detectCollsionFromTwoImages(img1 : ImageView, img2 : ImageView) : Boolean{
+
+    val rect1 : Rect = Rect()
+    img1.getDrawingRect(rect1)
+    val rect2 : Rect = Rect()
+    img2.getDrawingRect(rect2)
+    return Rect.intersects(rect1,rect2);
+}
+
+
+
+
+
+

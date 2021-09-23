@@ -15,7 +15,7 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Main"
+            android:name=".Keveropult"
             android:exported="true"
             android:screenOrientation="fullSensor">
             <intent-filter>
