@@ -32,31 +32,26 @@
 
             <TextView
                 android:id="@+id/sor"
-                android:fontFamily="sans-serif-smallcaps"
+                android:fontFamily="@font/amatic_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sör"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/bor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bor"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/whisky"
                 android:layout_width="match_parent"
+                android:fontFamily="@font/seasern"
                 android:layout_height="wrap_content"
-                android:text="Whisky/ Whsikey"
+                android:text="Whisky/ Whiskey"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/brandy"
+                android:fontFamily="@font/fff_tusj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Brandy"
