@@ -37,6 +37,9 @@ class _Request(ctx : AppCompatActivity){
                             if(res == "200"){
                                 Toast.makeText(contex, "Sikeresen bejelentkeztél",Toast.LENGTH_LONG).show()
                             }
+                            else{
+                                Toast.makeText(contex, "Valamit nagyon elbasztál ", Toast.LENGTH_LONG).show()
+                            }
 
                         } catch (e: Exception) {
                             e.printStackTrace()
