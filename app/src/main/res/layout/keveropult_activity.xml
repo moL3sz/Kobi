@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/kobi"
+        android:layout_width="32dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="208dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/piacon"
+        app:srcCompat="@drawable/kobi" />
+
     <TextView
         android:id="@+id/piacon"
         android:layout_width="wrap_content"
@@ -32,9 +42,9 @@
 
     <ScrollView
         android:layout_width="150dp"
-        android:layout_height="648dp"
+        android:layout_height="300dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 

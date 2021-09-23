@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,17 +11,22 @@ import java.lang.reflect.TypeVariable
 import java.time.Instant
 import android.content.ClipData
 import android.content.ClipDescription
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Point
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.Log
 import android.view.DragEvent
-import org.w3c.dom.Text
+import android.widget.ImageView
+import androidx.annotation.RequiresApi
+import android.view.MotionEvent
+import android.view.View.DragShadowBuilder
+import android.view.View.OnTouchListener
+
 
 public class Keveropult :AppCompatActivity(){
 
+    @SuppressLint("ClickableViewAccessibility")
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keveropult_activity)
@@ -35,57 +41,40 @@ public class Keveropult :AppCompatActivity(){
             Log.i("ID",drinkID)
 
             val currentTextView : TextView = findViewById<TextView>(resources.getIdentifier(drinkID,"id",this.packageName));
-
-            currentTextView.setOnLongClickListener{v:View ->
-                val item = ClipData.Item(v.tag as? CharSequence)
-
-                val dragData = ClipData(
-                    "drag",
-                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-                    item
-                )
-
-                val myShadow = MyDragShadowBuilder(v)
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    v.startDragAndDrop(dragData, myShadow, null, 0)
+            val img : ImageView = findViewById<ImageView>(R.id.kobi)
+            img.setOnTouchListener { v : View, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        val data = ClipData.newPlainText("", "")
+                        val shadowBuilder = DragShadowBuilder(img)
+                        img.startDrag(data, shadowBuilder, img, 0)
+                        img.visibility = View.INVISIBLE
+                        true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        img.visibility = View.VISIBLE
+                        true
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        img.visibility = View.VISIBLE
+                        true
+                    }
+                    else -> {
+                        false
+                    }
                 }
-                else{
-                    false;
-                }
-
             }
         }
-
         recieverContainer.setOnDragListener(dragListen)
 
 
-    }
-    private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
-        //itt majd nyilván a saját iconja lesz majd egy color helyett
 
-        private val shadow = ColorDrawable(Color.LTGRAY)
-
-        override fun onProvideShadowMetrics(size: Point, touch: Point) {
-            val width: Int = (view.width / 1.2F).toInt()
-            val height: Int = (view.height / 1.2F).toInt()
-            //val width: Int = view.width / 2
-            //val height: Int = view.height / 2
-
-            shadow.setBounds(0, 0, width, height)
-            size.set(width, height)
-            touch.set(width / 2, height / 2)
-        }
-        override fun onDrawShadow(canvas: Canvas) {
-            shadow.draw(canvas)
-        }
     }
     private val dragListen = View.OnDragListener { v, event ->
         val receiverView:TextView = v as TextView
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    receiverView.setBackgroundColor(Color.CYAN)
                     v.invalidate()
                     true
                 } else {
@@ -94,7 +83,6 @@ public class Keveropult :AppCompatActivity(){
             }
 
             DragEvent.ACTION_DRAG_ENTERED -> {
-                receiverView.setBackgroundColor(Color.GREEN)
 
                 receiverView.text = "Öntsed öntseeed!!!"
                 v.invalidate()
@@ -108,6 +96,7 @@ public class Keveropult :AppCompatActivity(){
                 //itt fog visszaugrani a pia icon a helyére
                 //majd megcsinálom függvényt rá + eddig csak textViewval megy de csak a test kedvéért
                 //de majd később ugye iconokkal
+                receiverView.text = "Huzd ide a piát!"
                 v.invalidate()
                 true
             }
@@ -124,8 +113,6 @@ public class Keveropult :AppCompatActivity(){
 
             DragEvent.ACTION_DRAG_ENDED -> {
                 v.invalidate()
-
-
                 when(event.result) {
                     true ->
                         // drop was handled
@@ -134,7 +121,6 @@ public class Keveropult :AppCompatActivity(){
                     else ->{
                         //
                         receiverView.text = "Vissza raktad!"
-                        receiverView.setBackgroundColor(Color.RED)
                     }
                 }
                 true

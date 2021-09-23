@@ -30,8 +30,6 @@ class LoginActivity : AppCompatActivity(){
             val req = _Request(this)
 
             req.loginRequest(username = "hello", password = "world", token = "TOken")
-
-
             //Le kapjuk a input fieldeknek az értékeit
             //val email = findViewById<EditText>(R.id.loginInput).text.toString()
            // val password = findViewById<EditText>(R.id.passwordInput).text.toString()
