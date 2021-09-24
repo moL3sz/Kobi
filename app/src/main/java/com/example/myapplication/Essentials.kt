@@ -18,6 +18,7 @@ import kotlin.random.Random
 import android.R.attr.data
 import android.content.Context
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import kotlin.io.path.Path
 class _Request(ctx : AppCompatActivity){
@@ -158,6 +159,10 @@ fun detectCollsionFromTwoImages(img1 : ImageView, img2 : ImageView) : Boolean{
     return Rect.intersects(rect1,rect2);
 }
 
+
+fun getDrawableByName(ctx: Context,name : String) : Int{
+    return ctx.resources.getIdentifier(name,"drawable",ctx.packageName);
+}
 
 
 
