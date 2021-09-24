@@ -51,17 +51,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="ExtraText">
 
             <TextView
                 android:id="@+id/sor"
-<<<<<<< HEAD
                 android:fontFamily="@font/amatic_bold"
-=======
->>>>>>> UI
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-smallcaps"
                 android:text="Sör"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
@@ -78,7 +75,7 @@
 
             <TextView
                 android:id="@+id/brandy"
-                android:fontFamily="@font/fff_tusj"
+                android:fontFamily="@font/FFF_Tusj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Brandy"
