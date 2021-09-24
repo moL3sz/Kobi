@@ -47,7 +47,7 @@ public class Keveropult :AppCompatActivity(){
                     MotionEvent.ACTION_DOWN -> {
                         val data = ClipData.newPlainText("", "")
                         val shadowBuilder = DragShadowBuilder(img)
-                        img.startDrag(data, shadowBuilder, img, 0)
+                        img.startDragAndDrop(data, shadowBuilder, img, 1)
                         img.visibility = View.INVISIBLE
                         true
                     }
@@ -131,4 +131,9 @@ public class Keveropult :AppCompatActivity(){
             }
         }
     }
+
+    //Todo kell akkor amit mondtam a horizontal scroll cucc, szerintem holnap megcsinálom!
+    //Vagy hardcodeljuk bele az adatot vagy dinamikusan legenráljuk
+    //Hard-code -> Nehezebb lesz skálázni
+    //Dynamic-generate
 }
