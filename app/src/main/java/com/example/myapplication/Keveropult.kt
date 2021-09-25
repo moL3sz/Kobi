@@ -55,21 +55,20 @@ public class Keveropult :AppCompatActivity(){
         val drinks = arrayOf("gin", "jack", "kobi")
 
 
-<<<<<<< HEAD
         val recieverContainer : TextView = findViewById<TextView> (R.id.piacon)
         var drinkSize = drinks.size;
         for(i in 0 until drinkSize){
             val drinkID : String = drinks[i].toString()
             Log.i("ID",drinkID)
 
-            val currentTextView : TextView = findViewById<TextView>(resources.getIdentifier(drinkID,"id",this.packageName));
+            /*val currentTextView : TextView = findViewById<TextView>(resources.getIdentifier(drinkID,"id",this.packageName));
             val img : ImageView = findViewById<ImageView>(R.id.kobi)
             img.setOnTouchListener { v : View, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         val data = ClipData.newPlainText("", "")
                         val shadowBuilder = DragShadowBuilder(img)
-                        img.startDragAndDrop(data, shadowBuilder, img, 1)
+                        img.startDrag(data, shadowBuilder, img, 1)
                         img.visibility = View.INVISIBLE
                         true
                     }
@@ -85,10 +84,9 @@ public class Keveropult :AppCompatActivity(){
                         false
                     }
                 }
-            }
+            }*/
         }
         recieverContainer.setOnDragListener(dragListen)
-=======
         //initalize vars
         drinkRecyclerView = findViewById<RecyclerView>(R.id.cRecycleView)
         drinkRecyclerView.setItemViewCacheSize(3);
@@ -104,22 +102,13 @@ public class Keveropult :AppCompatActivity(){
 
         //
         CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable,findViewById<TextView>(R.id.currentDrinkLabel));
->>>>>>> UI
 
         val snapHelper: SnapHelper = PagerSnapHelper();
         snapHelper.attachToRecyclerView(drinkRecyclerView);
 
-
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector
         layoutManagerStoreFilter.scrollToPosition(((Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % drinkListDrawable.size))
-
-        val recieverContainer: TextView = findViewById<TextView>(R.id.piacon)
-        var drinkSize = drinks.size;
-        for (i in 0 until drinkSize) {
-            val drinkID: String = drinks[i].toString()
-            Log.i("ID", drinkID)
-        }
-            recieverContainer.setOnDragListener(dragListen)
+        recieverContainer.setOnDragListener(dragListen)
 
     }
 
@@ -190,6 +179,7 @@ public class Keveropult :AppCompatActivity(){
     //Hard-code -> Nehezebb lesz skálázni
     //Dynamic-generate
 }
+
 
 class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : TextView) : RecyclerView.Adapter<CircularDrinkSelector.ViewHolderImage>() {
     private var itemList: List<Int> = ArrayList()

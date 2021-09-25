@@ -28,16 +28,9 @@ class LoginActivity : AppCompatActivity(){
             val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager;
             //Toast.makeText(this@Main, checkForInternet(cm).toString(),Toast.LENGTH_LONG).show();
             val req = _Request(this)
-<<<<<<< HEAD
             val username = findViewById<EditText>(R.id.loginInput).text.toString()
             val password = findViewById<EditText>(R.id.passwordInput).text.toString()
             req.loginRequest(username = username, password = password, token = "TOken")
-
-
-=======
-
-            req.loginRequest(username = "hello", password = "world", token = "TOken")
->>>>>>> UI
             //Le kapjuk a input fieldeknek az értékeit
             //val email = findViewById<EditText>(R.id.loginInput).text.toString()
            // val password = findViewById<EditText>(R.id.passwordInput).text.toString()

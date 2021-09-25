@@ -4,17 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<<<<<<< HEAD
-    <ImageView
-        android:id="@+id/kobi"
-        android:layout_width="32dp"
-        android:layout_height="76dp"
-        android:layout_marginTop="188dp"
-        android:layout_marginEnd="208dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/piacon"
-        app:srcCompat="@drawable/kobi" />
-=======
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cRecycleView"
@@ -24,7 +13,6 @@
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentDrinkLabel" />
->>>>>>> UI
 
     <TextView
         android:id="@+id/piacon"
@@ -63,93 +51,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="ExtraText">
-
-            <TextView
-                android:id="@+id/sor"
-                android:fontFamily="@font/amatic_bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sör"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-
-            <TextView
-                android:id="@+id/whisky"
-                android:layout_width="match_parent"
-                android:fontFamily="@font/seasern"
-                android:layout_height="wrap_content"
-                android:text="Whisky/ Whiskey"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/brandy"
-                android:fontFamily="@font/FFF_Tusj"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Brandy"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/gin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Gin"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/vodka"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Vodka"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/abszint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Abszint"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/vermut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Vermut"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/konyak"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Konyak"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tequila"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tequila"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-=======
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
->>>>>>> UI
+        app:layout_constraintTop_toBottomOf="@+id/textView2"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
