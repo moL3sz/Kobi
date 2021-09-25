@@ -16,8 +16,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Keveropult"
-            android:exported="true"
-            android:screenOrientation="fullSensor">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +27,6 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
             >
 
         </activity>

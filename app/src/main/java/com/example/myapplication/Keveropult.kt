@@ -2,9 +2,6 @@ package com.example.myapplication
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextClock
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.lang.reflect.TypeVariable
 import java.time.Instant
@@ -16,10 +13,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import android.view.View.DragShadowBuilder
 import android.view.View.OnTouchListener
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +24,7 @@ import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.google.android.gms.fido.fido2.api.common.RequestOptions
 import java.lang.Exception
-import com.example.essentials.getDrawableByName
+import com.example.essentials.createNewLayerInGlass
 
 
 
@@ -44,7 +41,7 @@ public class Keveropult :AppCompatActivity(){
 
     lateinit var drinkRecyclerView : RecyclerView;
     var drinkListDrawable = mutableListOf<Int>();
-
+    lateinit var pohar : LinearLayout;
     lateinit var CIRCULAR_drinkSelector : CircularDrinkSelector;
     lateinit var layoutManagerStoreFilter : LinearLayoutManager;
     @SuppressLint("ClickableViewAccessibility")
@@ -53,39 +50,8 @@ public class Keveropult :AppCompatActivity(){
         setContentView(R.layout.keveropult_activity)
         val drinkList: List<TextView> = ArrayList<TextView>();
         val drinks = arrayOf("gin", "jack", "kobi")
-
-
         val recieverContainer : TextView = findViewById<TextView> (R.id.piacon)
         var drinkSize = drinks.size;
-        for(i in 0 until drinkSize){
-            val drinkID : String = drinks[i].toString()
-            Log.i("ID",drinkID)
-
-            /*val currentTextView : TextView = findViewById<TextView>(resources.getIdentifier(drinkID,"id",this.packageName));
-            val img : ImageView = findViewById<ImageView>(R.id.kobi)
-            img.setOnTouchListener { v : View, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        val data = ClipData.newPlainText("", "")
-                        val shadowBuilder = DragShadowBuilder(img)
-                        img.startDrag(data, shadowBuilder, img, 1)
-                        img.visibility = View.INVISIBLE
-                        true
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        img.visibility = View.VISIBLE
-                        true
-                    }
-                    MotionEvent.ACTION_CANCEL -> {
-                        img.visibility = View.VISIBLE
-                        true
-                    }
-                    else -> {
-                        false
-                    }
-                }
-            }*/
-        }
         recieverContainer.setOnDragListener(dragListen)
         //initalize vars
         drinkRecyclerView = findViewById<RecyclerView>(R.id.cRecycleView)
@@ -108,7 +74,29 @@ public class Keveropult :AppCompatActivity(){
 
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector
         layoutManagerStoreFilter.scrollToPosition(((Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % drinkListDrawable.size))
+
+        //pohár töltés
+
+        pohar = findViewById <LinearLayout>(R.id.pohar)
+
+
+
+
+
+
         recieverContainer.setOnDragListener(dragListen)
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -126,7 +114,11 @@ public class Keveropult :AppCompatActivity(){
 
             DragEvent.ACTION_DRAG_ENTERED -> {
                 Log.e("event",event.clipDescription.toString())
-                receiverView.text = "asd"
+
+
+                //init a new thread of filling the class up!
+                val newLayer : TextView = createNewLayerInGlass(this,1,R.color.yellow,pohar)
+                pohar.addView(newLayer)
                 v.invalidate()
                 true
             }
@@ -174,10 +166,6 @@ public class Keveropult :AppCompatActivity(){
         }
     }
 
-    //Todo kell akkor amit mondtam a horizontal scroll cucc, szerintem holnap megcsinálom!
-    //Vagy hardcodeljuk bele az adatot vagy dinamikusan legenráljuk
-    //Hard-code -> Nehezebb lesz skálázni
-    //Dynamic-generate
 }
 
 

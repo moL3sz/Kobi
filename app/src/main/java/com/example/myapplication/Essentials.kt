@@ -16,10 +16,13 @@ import java.io.*
 import java.lang.Exception
 import kotlin.random.Random
 import android.R.attr.data
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import kotlin.io.path.Path
 class _Request(ctx : AppCompatActivity){
     var contex : AppCompatActivity
@@ -165,6 +168,18 @@ fun getDrawableByName(ctx: Context,name : String) : Int{
 }
 
 
+@SuppressLint("ResourceType")
+fun createNewLayerInGlass(context : Context, id : Int,color : Int, parentLayout : LinearLayout) : TextView{
+
+    val DEFAULT_HEIGHT = 50;
+    val newDrink = TextView(context);
+    newDrink.id = id;
+    newDrink.width = parentLayout.width
+    newDrink.height = DEFAULT_HEIGHT
+    newDrink.setBackgroundColor(color);
+    return newDrink;
+
+}
 
 
 
