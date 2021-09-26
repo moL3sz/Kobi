@@ -17,19 +17,20 @@ import androidx.annotation.RequiresApi
 import android.view.View.DragShadowBuilder
 import android.view.View.OnTouchListener
 import android.widget.*
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.google.android.gms.fido.fido2.api.common.RequestOptions
 import java.lang.Exception
 import com.example.essentials.createNewLayerInGlass
+import android.view.MotionEvent
+import androidx.recyclerview.widget.*
+import org.w3c.dom.Text
+import kotlin.math.abs
+import kotlin.math.floor
 
-
-
-
-
+private val labelList : List<String> = listOf(
+    "Köbányai sör",
+    "Agárdi Chameleon Gin",
+    "Jack Daniels Whiskey");
 public class Keveropult :AppCompatActivity(){
 
     @SuppressLint("ClickableViewAccessibility")
@@ -38,12 +39,20 @@ public class Keveropult :AppCompatActivity(){
 
 
     //global vars in class
-
+    private var labelList : List<String> = listOf(
+        "Köbányai sör",
+        "Agárdi Chameleon Gin",
+        "Jack Daniels Whiskey");
     lateinit var drinkRecyclerView : RecyclerView;
     var drinkListDrawable = mutableListOf<Int>();
     lateinit var pohar : LinearLayout;
     lateinit var CIRCULAR_drinkSelector : CircularDrinkSelector;
     lateinit var layoutManagerStoreFilter : LinearLayoutManager;
+    lateinit var currentLabelText : TextView;
+
+    var touchDownX = 0;
+    var touchDownY = 0;
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,44 +63,44 @@ public class Keveropult :AppCompatActivity(){
         var drinkSize = drinks.size;
         recieverContainer.setOnDragListener(dragListen)
         //initalize vars
+
+
+
+        currentLabelText = findViewById<TextView>(R.id.currentDrinkLabel);
         drinkRecyclerView = findViewById<RecyclerView>(R.id.cRecycleView)
-        drinkRecyclerView.setItemViewCacheSize(3);
+        drinkRecyclerView.setItemViewCacheSize(0);
         layoutManagerStoreFilter = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         drinkRecyclerView.layoutManager = layoutManagerStoreFilter
         /*(i in 0 until drinks.size){
             val drinkName = drinks[i]+".jpg"
             drinkListDrawable.add(getDrawableByName(this,drinkName))
         }*/
-        drinkListDrawable.add(R.drawable.kobi)
+
         drinkListDrawable.add(R.drawable.gin)
         drinkListDrawable.add(R.drawable.jack)
+        drinkListDrawable.add(R.drawable.kobi)
+        drinkRecyclerView.isSaveEnabled = false;
 
         //
-        CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable,findViewById<TextView>(R.id.currentDrinkLabel));
+        CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable, currentLabelText);
 
         val snapHelper: SnapHelper = PagerSnapHelper();
         snapHelper.attachToRecyclerView(drinkRecyclerView);
 
+
+
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector
-        layoutManagerStoreFilter.scrollToPosition(((Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % drinkListDrawable.size))
+        val offset : Int = 1000000
+
+        layoutManagerStoreFilter.scrollToPosition((offset * drinkSize)+1);
 
         //pohár töltés
 
         pohar = findViewById <LinearLayout>(R.id.pohar)
-
-
-
-
-
-
         recieverContainer.setOnDragListener(dragListen)
 
 
-
-
-
-
-
+        //swipe check
 
 
 
@@ -99,7 +108,6 @@ public class Keveropult :AppCompatActivity(){
 
 
     }
-
     private val dragListen = View.OnDragListener { v, event ->
         val receiverView:TextView = v as TextView
         when (event.action) {
@@ -165,21 +173,22 @@ public class Keveropult :AppCompatActivity(){
             }
         }
     }
-
 }
 
 
 class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : TextView) : RecyclerView.Adapter<CircularDrinkSelector.ViewHolderImage>() {
     private var itemList: List<Int> = ArrayList()
     private lateinit var mContext: Context;
+    lateinit var drinkLabel: TextView;
+
+
+    private  var prevPosition = 0;
 
     lateinit var CurrentLabelText : TextView;
 
 
-    private var labelList : List<String> = listOf(
-        "Köbányai sör",
-        "Agárdi Chameleon Gin",
-        "Jack Daniels Whiskey");
+    private var stateOfDrinks = mutableListOf<Int>();
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolderImage {
@@ -195,31 +204,40 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(viewHolder: ViewHolderImage,position: Int) {
-        Log.e("VewHOlderCalled", "::$position")
         val positionInList = position % itemList.size
 
-
-
-        //Itt még tudjuk manipulálni az egyes ImageViewkat...
-
         viewHolder.image_slider.id = positionInList
-
-
-        //Álltisjuk be hogy mi legyen kiírva az ital féle mint név: PL(Köbi kép -> "Kőbányai sör")
-
-
         Glide.with(mContext)
             .load(mContext.resources.getDrawable(itemList[positionInList]))
             .into(viewHolder.image_slider);
     }
-    override fun onViewDetachedFromWindow(viewHolder : ViewHolderImage){
-        val labelPos = (viewHolder.position + 0) % labelList.size
-        val currentLabelForDrink = labelList[labelPos];
-        CurrentLabelText.text = currentLabelForDrink;
-        Log.wtf("view","onViewDetachedFromWindow "+viewHolder);
+
+    override fun onViewAttachedToWindow(viewHolder: ViewHolderImage) {
+        val rawPosition : Int = viewHolder.adapterPosition;
+        val positionInList = (viewHolder.adapterPosition) % itemList.size;
+
+
+        //Add the current position to the drinkStates
+        if(stateOfDrinks.indexOf(rawPosition) == -1){
+            stateOfDrinks.add(rawPosition)
+        }
+        Log.wtf("PositionAT",viewHolder.adapterPosition.toString())
+        Log.wtf("PositionState",stateOfDrinks.toString())
+        //drinkLabel.text = labelList[positionInList]
     }
 
+    override fun onViewDetachedFromWindow(viewHolder: ViewHolderImage) {
+        val rawPosition : Int = viewHolder.adapterPosition;
+        Log.wtf("PositionDE",rawPosition.toString())
+        if(stateOfDrinks.indexOf(rawPosition) != -1){
+            stateOfDrinks.remove(rawPosition)
+        }
+        if(stateOfDrinks.size == 3){
+            drinkLabel.text = labelList[stateOfDrinks[2] % labelList.size]
+        }
+        Log.wtf("PositionStateDE",stateOfDrinks.toString())
 
+    }
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
     }
@@ -239,16 +257,15 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
                         image_slider.startDragAndDrop(data, shadowBuilder, image_slider, 0)
                         image_slider.visibility = View.VISIBLE
                         true
-
             }
         }
     }
 
     init {
         try {
+            this.drinkLabel = drinkLabel
             mContext = context
             itemList = list2
-            CurrentLabelText = drinkLabel;
             //            Log.e("listSizeup::","::"+ itemList.size());
         } catch (e: Exception) {
             e.printStackTrace()
