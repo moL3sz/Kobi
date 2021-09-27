@@ -137,7 +137,6 @@ fun readTokenFromFile(ctx : Context) : Boolean{
         Log.i("Essentials","FUCKED UP")
         return  false
     }
-    return false
 }
 fun saveTokenToDevice(token: String,ctx : Context){
     try {
@@ -178,6 +177,50 @@ fun createNewLayerInGlass(context : Context, id : Int,color : Int, parentLayout 
     newDrink.height = DEFAULT_HEIGHT
     newDrink.setBackgroundColor(color);
     return newDrink;
+
+}
+
+fun MaxOfArray(arr : List<Int>?) : Int{
+    var m = 0;
+    if (arr != null) {
+        for(i in arr.indices){
+            if (arr[i] > m){
+                m = arr[i]
+            }
+        }
+    }
+    return m
+}
+fun MinOfArray(arr : List<Int>?) : Int{
+    var m = Int.MAX_VALUE;
+    if (arr != null) {
+        for(i in arr.indices){
+            if (arr[i] < m){
+                m = arr[i]
+            }
+        }
+    }
+    return m
+}
+fun rotateArrayAccordingToDirection(newPosition : Int, positionArray : MutableList<Int>) : MutableList<Int>{
+    //[0,1,2] //3
+    //[1,2,3]
+
+
+    //check if it swiped left or right
+    if(newPosition > MaxOfArray(positionArray)){ //Left swipe
+        positionArray.removeAt(0)
+        positionArray.add(newPosition)
+
+
+
+    }
+    else if(newPosition < MinOfArray(positionArray)){ //Right swipe
+        positionArray.removeAt(positionArray.size-1)
+        positionArray.add(0,newPosition)
+    }
+
+    return  positionArray
 
 }
 

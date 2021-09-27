@@ -21,11 +21,14 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.fido.fido2.api.common.RequestOptions
 import java.lang.Exception
 import com.example.essentials.createNewLayerInGlass
+import com.example.essentials.rotateArrayAccordingToDirection
+
 import android.view.MotionEvent
 import androidx.recyclerview.widget.*
 import org.w3c.dom.Text
 import kotlin.math.abs
 import kotlin.math.floor
+import kotlin.properties.Delegates
 
 private val labelList : List<String> = listOf(
     "Köbányai sör",
@@ -188,6 +191,7 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
 
 
     private var stateOfDrinks = mutableListOf<Int>();
+    private var lastAttachedPos by Delegates.notNull<Int>();
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -215,12 +219,18 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
     override fun onViewAttachedToWindow(viewHolder: ViewHolderImage) {
         val rawPosition : Int = viewHolder.adapterPosition;
         val positionInList = (viewHolder.adapterPosition) % itemList.size;
-
-
         //Add the current position to the drinkStates
-        if(stateOfDrinks.indexOf(rawPosition) == -1){
-            stateOfDrinks.add(rawPosition)
+        if(stateOfDrinks.size == 3){
+            lastAttachedPos = rawPosition
+            stateOfDrinks = rotateArrayAccordingToDirection(rawPosition,stateOfDrinks)
+            drinkLabel.text = labelList[(stateOfDrinks[1]+1) % stateOfDrinks.size] //AZé van +1 mert így működik azt nem kell bántani xd
         }
+        else {
+            if (stateOfDrinks.indexOf(rawPosition) == -1) {
+                stateOfDrinks.add(rawPosition)
+            }
+        }
+
         Log.wtf("PositionAT",viewHolder.adapterPosition.toString())
         Log.wtf("PositionState",stateOfDrinks.toString())
         //drinkLabel.text = labelList[positionInList]
@@ -228,13 +238,12 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
 
     override fun onViewDetachedFromWindow(viewHolder: ViewHolderImage) {
         val rawPosition : Int = viewHolder.adapterPosition;
+        if(rawPosition == lastAttachedPos){
+            drinkLabel.text = labelList[(stateOfDrinks[1]) % stateOfDrinks.size]
+            Log.wtf("Pos","Same position was detached!!!!!!!!!!")
+        }
         Log.wtf("PositionDE",rawPosition.toString())
-        if(stateOfDrinks.indexOf(rawPosition) != -1){
-            stateOfDrinks.remove(rawPosition)
-        }
-        if(stateOfDrinks.size == 3){
-            drinkLabel.text = labelList[stateOfDrinks[2] % labelList.size]
-        }
+
         Log.wtf("PositionStateDE",stateOfDrinks.toString())
 
     }
