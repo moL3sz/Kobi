@@ -4,7 +4,7 @@ import android.app.DownloadManager
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
+import android.app.Activity
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -16,14 +16,29 @@ import java.io.*
 import java.lang.Exception
 import kotlin.random.Random
 import android.R.attr.data
+import android.R.attr.width
 import android.annotation.SuppressLint
+import android.app.Person
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.*
+import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.json.JSONArray
+import org.json.JSONObject
+import org.w3c.dom.Text
 import kotlin.io.path.Path
+import android.R.attr.scaleY
+
+import android.R.attr.scaleX
+
+
+
 class _Request(ctx : AppCompatActivity){
     var contex : AppCompatActivity
     val API_URL : String = "http://172.22.8.68:4000"
@@ -98,6 +113,14 @@ class _Request(ctx : AppCompatActivity){
         }
     }
 }
+class _Color(alpha: Int, colorCode : String){
+    var alpha : Int;
+    var colorCode : String;
+    init {
+        this.alpha = alpha;
+        this.colorCode = colorCode;
+    }
+}
 @RequiresApi(Build.VERSION_CODES.M)
 fun checkForInternet(cm: ConnectivityManager) : Boolean{
     val activeNetwork = cm.activeNetwork;
@@ -152,30 +175,23 @@ fun saveTokenToDevice(token: String,ctx : Context){
 }
 
 
-fun detectCollsionFromTwoImages(img1 : ImageView, img2 : ImageView) : Boolean{
-
-    val rect1 : Rect = Rect()
-    img1.getDrawingRect(rect1)
-    val rect2 : Rect = Rect()
-    img2.getDrawingRect(rect2)
-    return Rect.intersects(rect1,rect2);
-}
-
-
 fun getDrawableByName(ctx: Context,name : String) : Int{
     return ctx.resources.getIdentifier(name,"drawable",ctx.packageName);
 }
 
 
 @SuppressLint("ResourceType")
-fun createNewLayerInGlass(context : Context, id : Int,color : Int, parentLayout : LinearLayout) : TextView{
+fun createNewLayerInGlass(
+    context : Context, id : Int,color : String?, parentLayout : LinearLayout, alpha: Float
+) : TextView{
 
     val DEFAULT_HEIGHT = 50;
     val newDrink = TextView(context);
     newDrink.id = id;
-    newDrink.width = parentLayout.width
-    newDrink.height = DEFAULT_HEIGHT
-    newDrink.setBackgroundColor(color);
+    newDrink.alpha = alpha
+    newDrink.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,100)
+    newDrink.requestLayout()
+    newDrink.setBackgroundColor(Color.parseColor(color))
     return newDrink;
 
 }
@@ -223,6 +239,27 @@ fun rotateArrayAccordingToDirection(newPosition : Int, positionArray : MutableLi
     return  positionArray
 
 }
+fun getSwipeDirectionFromPosition(newPosition: Int, positionArray: MutableList<Int>) : Boolean{
+    return MaxOfArray(positionArray) < newPosition
+}
+fun getJsonDataFromAsset(context: Context, fileName: String): String? {
+    val jsonString: String
+    try {
+        jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+    } catch (ioException: IOException) {
+        ioException.printStackTrace()
+        return null
+    }
+    return jsonString
+}
+fun loadColorsFromJson(context: Context): MutableList<_Color> {
+    var colors = mutableListOf<_Color>()
+    val gson = Gson()
+    val listColorType = object : TypeToken<List<_Color>>() {}.type
 
+    colors = gson.fromJson(getJsonDataFromAsset(context,"colors.json"),listColorType)
+    colors.forEachIndexed { idx, person -> Log.wtf("data", "> Item $idx:\n$person") }
+    return colors
+}
 
 

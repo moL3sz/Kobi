@@ -3,49 +3,42 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import java.lang.reflect.TypeVariable
-import java.time.Instant
 import android.content.ClipData
 import android.content.ClipDescription
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
 import android.view.View.DragShadowBuilder
-import android.view.View.OnTouchListener
 import android.widget.*
 import com.bumptech.glide.Glide
-import com.google.android.gms.fido.fido2.api.common.RequestOptions
 import java.lang.Exception
 import com.example.essentials.createNewLayerInGlass
 import com.example.essentials.rotateArrayAccordingToDirection
+import com.example.essentials.getSwipeDirectionFromPosition
 
-import android.view.MotionEvent
+import com.example.essentials._Color
+
 import androidx.recyclerview.widget.*
-import org.w3c.dom.Text
-import kotlin.math.abs
-import kotlin.math.floor
 import kotlin.properties.Delegates
 
 private val labelList : List<String> = listOf(
-    "Köbányai sör",
+    "Kőbányai sör",
     "Agárdi Chameleon Gin",
-    "Jack Daniels Whiskey");
-public class Keveropult :AppCompatActivity(){
+    "Jack Daniels Whiskey",
+    "Koccintós bor");
 
+
+public class Keveropult :AppCompatActivity(){
+    lateinit var colorList : MutableList<_Color>;
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
 
 
 
     //global vars in class
-    private var labelList : List<String> = listOf(
-        "Köbányai sör",
-        "Agárdi Chameleon Gin",
-        "Jack Daniels Whiskey");
     lateinit var drinkRecyclerView : RecyclerView;
     var drinkListDrawable = mutableListOf<Int>();
     lateinit var pohar : LinearLayout;
@@ -61,9 +54,8 @@ public class Keveropult :AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keveropult_activity)
         val drinkList: List<TextView> = ArrayList<TextView>();
-        val drinks = arrayOf("gin", "jack", "kobi")
         val recieverContainer : TextView = findViewById<TextView> (R.id.piacon)
-        var drinkSize = drinks.size;
+        val drinkSize = labelList.size;
         recieverContainer.setOnDragListener(dragListen)
         //initalize vars
 
@@ -78,10 +70,11 @@ public class Keveropult :AppCompatActivity(){
             val drinkName = drinks[i]+".jpg"
             drinkListDrawable.add(getDrawableByName(this,drinkName))
         }*/
-
+        drinkListDrawable.add(R.drawable.kobi)
         drinkListDrawable.add(R.drawable.gin)
         drinkListDrawable.add(R.drawable.jack)
-        drinkListDrawable.add(R.drawable.kobi)
+        drinkListDrawable.add(R.drawable.koccintos)
+
         drinkRecyclerView.isSaveEnabled = false;
 
         //
@@ -111,8 +104,36 @@ public class Keveropult :AppCompatActivity(){
 
 
     }
+
+
+    var layerCount = 0;
+    var layerHeightOffset = 0;
+
+    @SuppressLint("ResourceAsColor")
+    private fun createRunnable(drinkView: TextView): Runnable? {
+        return Runnable {
+            while (true) {
+                try {
+                    val layoutParams: ViewGroup.LayoutParams = drinkView.layoutParams
+                    layoutParams.height = (drinkView.height + 1)
+                    drinkView.layoutParams = layoutParams
+                    Thread.sleep(1)
+
+                }
+                catch (e : InterruptedException) {
+                    break
+                }
+            }
+        }
+    }
+
+
+
+
     private val dragListen = View.OnDragListener { v, event ->
         val receiverView:TextView = v as TextView
+        var UIThreadScaleDrink : Unit
+        var currentLayer : TextView;
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
@@ -128,46 +149,67 @@ public class Keveropult :AppCompatActivity(){
 
 
                 //init a new thread of filling the class up!
-                val newLayer : TextView = createNewLayerInGlass(this,1,R.color.yellow,pohar)
-                pohar.addView(newLayer)
+                val colorId = event.clipDescription.label.toString().toInt()
+                var currentColor : String = "#ffffff"
+                var currentAlpha : Float = 1f;
+                when(colorId){
+                    0 -> {
+                        currentColor = "#f28e1c"
+                        currentAlpha = 0.8f;
+                    }
+                    1 -> {
+                        currentColor = "#d8e4bc"
+                        currentAlpha = 0.8f;
+                    }
+                    2 -> {
+                        currentColor = "#ddaa55"
+                        currentAlpha = 0.9f;
+                    }
+                }
+                val newLayer : TextView = createNewLayerInGlass(this,0,currentColor,pohar,currentAlpha)
+
+
+
+
+                pohar.addView(newLayer,0)
                 v.invalidate()
+
                 true
             }
 
             DragEvent.ACTION_DRAG_LOCATION ->
+            {
                 true
+            }
+
 
             DragEvent.ACTION_DRAG_EXITED -> {
-                //itt fog visszaugrani a pia icon a helyére
-                //majd megcsinálom függvényt rá + eddig csak textViewval megy de csak a test kedvéért
-                //de majd később ugye iconokkal
+                //stop the scaling thread -> nem nő tovább a pina (pia)
                 receiverView.text = "Huzd ide a piát!"
                 v.invalidate()
                 true
             }
 
-            DragEvent.ACTION_DROP -> {
-                //itt is vissza fogja dobni az eredeti positionre
-                /*
-                val item: ClipData.Item = event.clipData.getItemAt(0)
-                val dragData = item.text
-                receiverView.text = "You dropped : $dragData"
-                v.invalidate()*/
+            DragEvent.ACTION_DROP ->{
+
                 true
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
                 v.invalidate()
                 when(event.result) {
-                    true ->
-                        // drop was handled
+                    true ->{
                         receiverView.text = "Vissza raktad!"
 
+                    }
+                        // drop was handled
                     else ->{
                         //
                         receiverView.text = "Vissza raktad!"
+
                     }
                 }
+                v.invalidate()
                 true
             }
 
@@ -218,12 +260,13 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
 
     override fun onViewAttachedToWindow(viewHolder: ViewHolderImage) {
         val rawPosition : Int = viewHolder.adapterPosition;
-        val positionInList = (viewHolder.adapterPosition) % itemList.size;
+        val positionInList = (viewHolder.adapterPosition) % labelList.size;
+        lastAttachedPos = rawPosition
         //Add the current position to the drinkStates
         if(stateOfDrinks.size == 3){
-            lastAttachedPos = rawPosition
+
             stateOfDrinks = rotateArrayAccordingToDirection(rawPosition,stateOfDrinks)
-            drinkLabel.text = labelList[(stateOfDrinks[1]+1) % stateOfDrinks.size] //AZé van +1 mert így működik azt nem kell bántani xd
+            drinkLabel.text = labelList[(stateOfDrinks[1]) % labelList.size] //AZé van +1 mert így működik azt nem kell bántani xd
         }
         else {
             if (stateOfDrinks.indexOf(rawPosition) == -1) {
@@ -239,11 +282,13 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
     override fun onViewDetachedFromWindow(viewHolder: ViewHolderImage) {
         val rawPosition : Int = viewHolder.adapterPosition;
         if(rawPosition == lastAttachedPos){
-            drinkLabel.text = labelList[(stateOfDrinks[1]) % stateOfDrinks.size]
+            //TODO Itt van a baj ezt kell valahogyan kijavitani
+            val offset = if (getSwipeDirectionFromPosition(rawPosition,stateOfDrinks)) 2 else 0
+            lastAttachedPos = 0;
+            //drinkLabel.text = labelList[(stateOfDrinks[offset]) % labelList.size] még kissé bugos
             Log.wtf("Pos","Same position was detached!!!!!!!!!!")
         }
         Log.wtf("PositionDE",rawPosition.toString())
-
         Log.wtf("PositionStateDE",stateOfDrinks.toString())
 
     }

@@ -1,0 +1,12 @@
+{
+  "colors": {
+    "1": {
+      "alpha": 0.5,
+      "colorCode": "#ebc334"
+    },
+    "2": {
+      "alpha": 0.2,
+      "colorCode": "#d67906"
+    }
+  }
+}
