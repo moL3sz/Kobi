@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.HorizontalScrollView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import java.lang.Exception
@@ -48,6 +49,13 @@ class Main : AppCompatActivity(){
             val intent : Intent = Intent(this@Main, RegistrationActivity::class.java);
             startActivity(intent)
         }
+
+        //val menu = HorizontalScrollView.find
+
+        InitMenu();
+    }
+
+    fun InitMenu() {
 
     }
 }

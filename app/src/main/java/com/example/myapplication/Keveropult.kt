@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.R.attr
+import android.R.attr.*
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,53 +20,60 @@ import java.lang.Exception
 import com.example.essentials.createNewLayerInGlass
 import com.example.essentials.rotateArrayAccordingToDirection
 import com.example.essentials.getSwipeDirectionFromPosition
+import android.graphics.Matrix
+import android.widget.ImageView
 
 import com.example.essentials._Color
 
 import androidx.recyclerview.widget.*
 import kotlin.properties.Delegates
 
+import android.graphics.Bitmap
+
+import android.graphics.BitmapFactory
+import android.view.animation.RotateAnimation
+import android.view.animation.LinearInterpolator
+
+import android.view.animation.Animation
+
+lateinit var ezkellnekem : ImageView
+
 private val labelList : List<String> = listOf(
     "Kőbányai sör",
     "Agárdi Chameleon Gin",
     "Jack Daniels Whiskey",
-    "Koccintós bor");
-
+    "Koccintós bor")
 
 public class Keveropult :AppCompatActivity(){
-    lateinit var colorList : MutableList<_Color>;
+    lateinit var colorList : MutableList<_Color>
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
 
-
-
     //global vars in class
-    lateinit var drinkRecyclerView : RecyclerView;
-    var drinkListDrawable = mutableListOf<Int>();
-    lateinit var pohar : LinearLayout;
-    lateinit var CIRCULAR_drinkSelector : CircularDrinkSelector;
-    lateinit var layoutManagerStoreFilter : LinearLayoutManager;
-    lateinit var currentLabelText : TextView;
+    lateinit var drinkRecyclerView : RecyclerView
+    var drinkListDrawable = mutableListOf<Int>()
+    lateinit var pohar : LinearLayout
+    lateinit var CIRCULAR_drinkSelector : CircularDrinkSelector
+    lateinit var layoutManagerStoreFilter : LinearLayoutManager
+    lateinit var currentLabelText : TextView
 
-    var touchDownX = 0;
-    var touchDownY = 0;
+    var touchDownX = 0
+    var touchDownY = 0
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keveropult_activity)
-        val drinkList: List<TextView> = ArrayList<TextView>();
+        val drinkList: List<TextView> = ArrayList<TextView>()
         val recieverContainer : TextView = findViewById<TextView> (R.id.piacon)
-        val drinkSize = labelList.size;
+        val drinkSize = labelList.size
         recieverContainer.setOnDragListener(dragListen)
         //initalize vars
 
-
-
-        currentLabelText = findViewById<TextView>(R.id.currentDrinkLabel);
+        currentLabelText = findViewById<TextView>(R.id.currentDrinkLabel)
         drinkRecyclerView = findViewById<RecyclerView>(R.id.cRecycleView)
-        drinkRecyclerView.setItemViewCacheSize(0);
-        layoutManagerStoreFilter = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        drinkRecyclerView.setItemViewCacheSize(0)
+        layoutManagerStoreFilter = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         drinkRecyclerView.layoutManager = layoutManagerStoreFilter
         /*(i in 0 until drinks.size){
             val drinkName = drinks[i]+".jpg"
@@ -75,39 +84,30 @@ public class Keveropult :AppCompatActivity(){
         drinkListDrawable.add(R.drawable.jack)
         drinkListDrawable.add(R.drawable.koccintos)
 
-        drinkRecyclerView.isSaveEnabled = false;
+        drinkRecyclerView.isSaveEnabled = false
 
         //
-        CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable, currentLabelText);
+        CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable, currentLabelText)
 
-        val snapHelper: SnapHelper = PagerSnapHelper();
-        snapHelper.attachToRecyclerView(drinkRecyclerView);
-
-
+        val snapHelper: SnapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(drinkRecyclerView)
 
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector
         val offset : Int = 1000000
 
-        layoutManagerStoreFilter.scrollToPosition((offset * drinkSize)+1);
+        layoutManagerStoreFilter.scrollToPosition((offset * drinkSize)+1)
 
         //pohár töltés
 
         pohar = findViewById <LinearLayout>(R.id.pohar)
         recieverContainer.setOnDragListener(dragListen)
 
-
         //swipe check
-
-
-
-
-
 
     }
 
-
-    var layerCount = 0;
-    var layerHeightOffset = 0;
+    var layerCount = 0
+    var layerHeightOffset = 0
 
     @SuppressLint("ResourceAsColor")
     private fun createRunnable(drinkView: TextView): Runnable? {
@@ -127,14 +127,21 @@ public class Keveropult :AppCompatActivity(){
         }
     }
 
-
-
-
     private val dragListen = View.OnDragListener { v, event ->
-        val receiverView:TextView = v as TextView
+        var receiverView:TextView = v as TextView
         var UIThreadScaleDrink : Unit
-        var currentLayer : TextView;
-        when (event.action) {
+        var currentLayer : TextView
+
+        val rotate = RotateAnimation(
+            45F,
+            45F,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+
+        val b = when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     v.invalidate()
@@ -145,96 +152,97 @@ public class Keveropult :AppCompatActivity(){
             }
 
             DragEvent.ACTION_DRAG_ENTERED -> {
-                Log.e("event",event.clipDescription.toString())
-
+                Log.e("event", event.clipDescription.toString())
 
                 //init a new thread of filling the class up!
                 val colorId = event.clipDescription.label.toString().toInt()
-                var currentColor : String = "#ffffff"
-                var currentAlpha : Float = 1f;
-                when(colorId){
+                var currentColor: String = "#ffffff"
+                var currentAlpha: Float = 1f
+                when (colorId) {
                     0 -> {
                         currentColor = "#f28e1c"
-                        currentAlpha = 0.8f;
+                        currentAlpha = 0.8f
                     }
                     1 -> {
                         currentColor = "#d8e4bc"
-                        currentAlpha = 0.8f;
+                        currentAlpha = 0.8f
                     }
                     2 -> {
                         currentColor = "#ddaa55"
-                        currentAlpha = 0.9f;
+                        currentAlpha = 0.9f
                     }
                 }
-                val newLayer : TextView = createNewLayerInGlass(this,0,currentColor,pohar,currentAlpha)
+                val newLayer: TextView =
+                    createNewLayerInGlass(this, 0, currentColor, pohar, currentAlpha)
 
+                rotate.repeatCount = Animation.INFINITE
+                rotate.interpolator = LinearInterpolator()
 
+                ezkellnekem.startAnimation(rotate)
 
-
-                pohar.addView(newLayer,0)
+                pohar.addView(newLayer, 0)
                 v.invalidate()
 
                 true
             }
 
-            DragEvent.ACTION_DRAG_LOCATION ->
-            {
+            DragEvent.ACTION_DRAG_LOCATION -> {
                 true
             }
 
-
             DragEvent.ACTION_DRAG_EXITED -> {
                 //stop the scaling thread -> nem nő tovább a pina (pia)
+                ezkellnekem.clearAnimation()
                 receiverView.text = "Huzd ide a piát!"
                 v.invalidate()
                 true
             }
 
-            DragEvent.ACTION_DROP ->{
-
+            DragEvent.ACTION_DROP -> {
+                ezkellnekem.clearAnimation()
                 true
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
                 v.invalidate()
-                when(event.result) {
-                    true ->{
+                when (event.result) {
+                    true -> {
+                        ezkellnekem.clearAnimation()
                         receiverView.text = "Vissza raktad!"
-
                     }
-                        // drop was handled
-                    else ->{
+                    // drop was handled
+                    else -> {
                         //
+                        ezkellnekem.clearAnimation()
                         receiverView.text = "Vissza raktad!"
-
                     }
                 }
                 v.invalidate()
                 true
             }
-
             else -> {
                 false
             }
         }
+        b
     }
 }
 
+class receiverView {
+
+}
 
 class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : TextView) : RecyclerView.Adapter<CircularDrinkSelector.ViewHolderImage>() {
     private var itemList: List<Int> = ArrayList()
-    private lateinit var mContext: Context;
-    lateinit var drinkLabel: TextView;
+    private lateinit var mContext: Context
+    lateinit var drinkLabel: TextView
 
+    private  var prevPosition = 0
 
-    private  var prevPosition = 0;
+    lateinit var CurrentLabelText : TextView
 
-    lateinit var CurrentLabelText : TextView;
-
-
-    private var stateOfDrinks = mutableListOf<Int>();
-    private var lastAttachedPos by Delegates.notNull<Int>();
-
+    private var stateOfDrinks = mutableListOf<Int>()
+    private var lastAttachedPos by Delegates.notNull<Int>()
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolderImage {
@@ -242,7 +250,6 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
             R.layout.drink_selector_slider, viewGroup, false
         )
         return ViewHolderImage(itemViewFooterMenu)
-
     }
     fun getItem(position: Int): Long {
         return position.toLong()
@@ -255,12 +262,12 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
         viewHolder.image_slider.id = positionInList
         Glide.with(mContext)
             .load(mContext.resources.getDrawable(itemList[positionInList]))
-            .into(viewHolder.image_slider);
+            .into(viewHolder.image_slider)
     }
 
     override fun onViewAttachedToWindow(viewHolder: ViewHolderImage) {
-        val rawPosition : Int = viewHolder.adapterPosition;
-        val positionInList = (viewHolder.adapterPosition) % labelList.size;
+        val rawPosition : Int = viewHolder.adapterPosition
+        val positionInList = (viewHolder.adapterPosition) % labelList.size
         lastAttachedPos = rawPosition
         //Add the current position to the drinkStates
         if(stateOfDrinks.size == 3){
@@ -280,11 +287,11 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
     }
 
     override fun onViewDetachedFromWindow(viewHolder: ViewHolderImage) {
-        val rawPosition : Int = viewHolder.adapterPosition;
+        val rawPosition : Int = viewHolder.adapterPosition
         if(rawPosition == lastAttachedPos){
             //TODO Itt van a baj ezt kell valahogyan kijavitani
             val offset = if (getSwipeDirectionFromPosition(rawPosition,stateOfDrinks)) 2 else 0
-            lastAttachedPos = 0;
+            lastAttachedPos = 0
             //drinkLabel.text = labelList[(stateOfDrinks[offset]) % labelList.size] még kissé bugos
             Log.wtf("Pos","Same position was detached!!!!!!!!!!")
         }
@@ -305,12 +312,13 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
             image_slider = itemView.findViewById(R.id.image_slider)
 
             image_slider.setOnLongClickListener{
-                        val data : ClipData = ClipData.newPlainText(image_slider.id.toString(),"Hello");
+                val data : ClipData = ClipData.newPlainText(image_slider.id.toString(),"Hello")
 
-                        val shadowBuilder = DragShadowBuilder(image_slider)
-                        image_slider.startDragAndDrop(data, shadowBuilder, image_slider, 0)
-                        image_slider.visibility = View.VISIBLE
-                        true
+                val shadowBuilder = DragShadowBuilder(image_slider)
+                image_slider.startDragAndDrop(data, shadowBuilder, image_slider, 0)
+                image_slider.visibility = View.VISIBLE
+                ezkellnekem = image_slider
+                true
             }
         }
     }
@@ -320,7 +328,7 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
             this.drinkLabel = drinkLabel
             mContext = context
             itemList = list2
-            //            Log.e("listSizeup::","::"+ itemList.size());
+            //            Log.e("listSizeup::","::"+ itemList.size())
         } catch (e: Exception) {
             e.printStackTrace()
         }
