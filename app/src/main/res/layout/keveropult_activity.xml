@@ -61,14 +61,27 @@
     <LinearLayout
         android:id="@+id/pohar"
         android:layout_width="300dp"
-        android:layout_height="369dp"
+        android:layout_height="300dp"
         android:layout_marginStart="56dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/border"
+        android:layout_marginBottom="50dp"
         android:gravity="bottom"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent">
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="352dp"
+        android:layout_height="371dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/pohar1" />
 
     <!--<rotate
         xmlns:android="http://schemas.android.com/apk/res/android"

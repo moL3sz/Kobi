@@ -20,6 +20,7 @@ import java.lang.Exception
 import com.example.essentials.createNewLayerInGlass
 import com.example.essentials.rotateArrayAccordingToDirection
 import com.example.essentials.getSwipeDirectionFromPosition
+import com.example.essentials.isDone
 import android.graphics.Matrix
 import android.widget.ImageView
 
@@ -35,6 +36,13 @@ import android.view.animation.RotateAnimation
 import android.view.animation.LinearInterpolator
 
 import android.view.animation.Animation
+import java.util.*
+import kotlin.collections.ArrayList
+import android.view.ViewGroup
+
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.AnimatorUpdateListener
+
 
 lateinit var ezkellnekem : ImageView
 
@@ -127,9 +135,11 @@ public class Keveropult :AppCompatActivity(){
         }
     }
 
+    private var UIThreadScaleDrink = Timer();
+    lateinit var anim : ValueAnimator;
     private val dragListen = View.OnDragListener { v, event ->
-        var receiverView:TextView = v as TextView
-        var UIThreadScaleDrink : Unit
+        val receiverView:TextView = v as TextView
+        var drinkOffset = 0;
         var currentLayer : TextView
 
         val rotate = RotateAnimation(
@@ -141,7 +151,7 @@ public class Keveropult :AppCompatActivity(){
             0.5f
         )
 
-        val b = when (event.action) {
+        when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                     v.invalidate()
@@ -172,15 +182,30 @@ public class Keveropult :AppCompatActivity(){
                         currentAlpha = 0.9f
                     }
                 }
+                isDone = false;
+
                 val newLayer: TextView =
                     createNewLayerInGlass(this, 0, currentColor, pohar, currentAlpha)
 
                 rotate.repeatCount = Animation.INFINITE
                 rotate.interpolator = LinearInterpolator()
 
+
+                anim = ValueAnimator.ofInt(drinkOffset, pohar.height)
+                anim.addUpdateListener { valueAnimator ->
+                    val h = valueAnimator.animatedValue as Int
+                    val layoutParams: ViewGroup.LayoutParams =
+                        newLayer.layoutParams
+                    layoutParams.height =h
+                    newLayer.layoutParams = layoutParams
+                }
+                anim.duration = 2000
+
                 ezkellnekem.startAnimation(rotate)
 
                 pohar.addView(newLayer, 0)
+                anim.start()
+
                 v.invalidate()
 
                 true
@@ -191,7 +216,12 @@ public class Keveropult :AppCompatActivity(){
             }
 
             DragEvent.ACTION_DRAG_EXITED -> {
+                anim.cancel()
+                drinkOffset += pohar.getChildAt(0).height
+
+                isDone = true;
                 //stop the scaling thread -> nem nő tovább a pina (pia)
+                UIThreadScaleDrink.cancel()
                 ezkellnekem.clearAnimation()
                 receiverView.text = "Huzd ide a piát!"
                 v.invalidate()
@@ -199,11 +229,20 @@ public class Keveropult :AppCompatActivity(){
             }
 
             DragEvent.ACTION_DROP -> {
+                anim.cancel()
+                drinkOffset += pohar.getChildAt(0).height
+                isDone = true;
+
                 ezkellnekem.clearAnimation()
                 true
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
+                isDone = true;
+                drinkOffset += pohar.getChildAt(0).height
+
+                anim.cancel()
+
                 v.invalidate()
                 when (event.result) {
                     true -> {
@@ -224,7 +263,7 @@ public class Keveropult :AppCompatActivity(){
                 false
             }
         }
-        b
+
     }
 }
 

@@ -36,7 +36,12 @@ import kotlin.io.path.Path
 import android.R.attr.scaleY
 
 import android.R.attr.scaleX
-
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class _Request(ctx : AppCompatActivity){
@@ -121,6 +126,20 @@ class _Color(alpha: Int, colorCode : String){
         this.colorCode = colorCode;
     }
 }
+var isDone = false;
+
+@SuppressLint("Recycle")
+private fun scaleView(tv : TextView, startScale : Float, endScale : Float) : ValueAnimator{
+    val anim = ValueAnimator.ofInt(tv.getMeasuredHeight(), -100)
+    anim.addUpdateListener { valueAnimator ->
+        val `val` = valueAnimator.animatedValue as Int
+        val layoutParams: ViewGroup.LayoutParams = tv.layoutParams
+        layoutParams.height = `val` + 1
+        tv.layoutParams = layoutParams
+    }
+    anim.duration = 10
+    return anim
+}
 @RequiresApi(Build.VERSION_CODES.M)
 fun checkForInternet(cm: ConnectivityManager) : Boolean{
     val activeNetwork = cm.activeNetwork;
@@ -182,7 +201,7 @@ fun getDrawableByName(ctx: Context,name : String) : Int{
 
 @SuppressLint("ResourceType")
 fun createNewLayerInGlass(
-    context : Context, id : Int,color : String?, parentLayout : LinearLayout, alpha: Float
+    context: Context, id: Int, color: String?, parentLayout: LinearLayout, alpha: Float,
 ) : TextView{
 
     val DEFAULT_HEIGHT = 50;
