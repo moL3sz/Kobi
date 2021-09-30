@@ -20,7 +20,8 @@ import java.lang.Exception
 import com.example.essentials.createNewLayerInGlass
 import com.example.essentials.rotateArrayAccordingToDirection
 import com.example.essentials.getSwipeDirectionFromPosition
-import com.example.essentials.isDone
+import com.example.essentials.loadDrinksFromJSON
+import com.example.essentials._Request
 import android.graphics.Matrix
 import android.widget.ImageView
 
@@ -42,21 +43,32 @@ import android.view.ViewGroup
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.os.AsyncTask
+import android.util.JsonReader
+import org.json.JSONObject
 
 
+@SuppressLint("StaticFieldLeak")
 lateinit var ezkellnekem : ImageView
 
-private val labelList : List<String> = listOf(
+private val labelList = mutableListOf<String>(
     "Kőbányai sör",
-    "Agárdi Chameleon Gin",
-    "Jack Daniels Whiskey",
-    "Koccintós bor")
+    "Agárdi Chamelon Gin",
+    "Jack Daniels",
+    "Koccintós bor"
+)
 
 public class Keveropult :AppCompatActivity(){
+
+
+
     lateinit var colorList : MutableList<_Color>
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
 
+
+
+    lateinit var drinkObjects : List<JSONObject>;
     //global vars in class
     lateinit var drinkRecyclerView : RecyclerView
     var drinkListDrawable = mutableListOf<Int>()
@@ -87,6 +99,29 @@ public class Keveropult :AppCompatActivity(){
             val drinkName = drinks[i]+".jpg"
             drinkListDrawable.add(getDrawableByName(this,drinkName))
         }*/
+        val req = _Request(this)
+        drinkObjects = req.getDrinkRequest("*","asd"    )
+        Log.wtf("res1",drinkObjects.toString())
+
+
+
+
+
+
+        //process the json file and add the whole thing into a parallel array
+
+
+        /*for(i in drinkObjects.indices){
+            val t : JSONObject = drinkObjects[i]
+
+            val name : String = t["name"].toString()
+            val src : String = t["src"].toString()
+            drinkListDrawable.add(this.resources.getIdentifier(src,"drawable",this.packageName))
+            labelList.add(name)
+            Log.wtf("json",t.toString())
+
+        }*/
+
         drinkListDrawable.add(R.drawable.kobi)
         drinkListDrawable.add(R.drawable.gin)
         drinkListDrawable.add(R.drawable.jack)
@@ -103,7 +138,7 @@ public class Keveropult :AppCompatActivity(){
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector
         val offset : Int = 1000000
 
-        layoutManagerStoreFilter.scrollToPosition((offset * drinkSize)+1)
+        layoutManagerStoreFilter.scrollToPosition((offset * labelList.size)+1)
 
         //pohár töltés
 
@@ -166,8 +201,8 @@ public class Keveropult :AppCompatActivity(){
 
                 //init a new thread of filling the class up!
                 val colorId = event.clipDescription.label.toString().toInt()
-                var currentColor: String = "#ffffff"
-                var currentAlpha: Float = 1f
+                var currentColor: String = "#ffffff"//drinkObjects[colorId]["color"].toString();
+                var currentAlpha: Float = 1f//drinkObjects[colorId]["alpha"].toString().toFloat();
                 when (colorId) {
                     0 -> {
                         currentColor = "#f28e1c"
@@ -182,7 +217,6 @@ public class Keveropult :AppCompatActivity(){
                         currentAlpha = 0.9f
                     }
                 }
-                isDone = false;
 
                 val newLayer: TextView =
                     createNewLayerInGlass(this, 0, currentColor, pohar, currentAlpha)
@@ -219,7 +253,6 @@ public class Keveropult :AppCompatActivity(){
                 anim.cancel()
                 drinkOffset += pohar.getChildAt(0).height
 
-                isDone = true;
                 //stop the scaling thread -> nem nő tovább a pina (pia)
                 UIThreadScaleDrink.cancel()
                 ezkellnekem.clearAnimation()
@@ -231,14 +264,12 @@ public class Keveropult :AppCompatActivity(){
             DragEvent.ACTION_DROP -> {
                 anim.cancel()
                 drinkOffset += pohar.getChildAt(0).height
-                isDone = true;
 
                 ezkellnekem.clearAnimation()
                 true
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
-                isDone = true;
                 drinkOffset += pohar.getChildAt(0).height
 
                 anim.cancel()
@@ -267,9 +298,6 @@ public class Keveropult :AppCompatActivity(){
     }
 }
 
-class receiverView {
-
-}
 
 class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : TextView) : RecyclerView.Adapter<CircularDrinkSelector.ViewHolderImage>() {
     private var itemList: List<Int> = ArrayList()

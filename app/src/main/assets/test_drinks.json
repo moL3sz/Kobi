@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Kőbányai sör",
+    "src": "kobi",
+    "category": {
+      "maincat": 1,
+      "subcat": 1
+    },
+    "price": "210",
+    "color": "#f28e1c",
+    "alpha" : "0.76"
+  },
+  {
+    "name": "Jack Daniels",
+    "src": "jack",
+    "category": {
+      "maincat": 2,
+      "subcat": 1
+    },
+    "price": "5990",
+    "color": "#f7ad0c",
+    "alpha": "0.65"
+  },
+  {
+    "name": "Agárdi Chamelon Gin",
+    "src": "gin",
+    "category": {
+      "maincat": 2,
+      "subcat": 2
+    },
+    "price": "4500",
+    "color": "#d0f7ad",
+    "alpha": "0.48"
+  },
+  {
+    "name": "Koccintos Bor",
+    "src": "koccintos",
+    "category": {
+      "maincat": 1,
+      "subcat": 2
+    },
+    "price": "849",
+    "color": "#fffa6e",
+    "alpha": "0.37"
+  }
+]
