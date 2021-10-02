@@ -10,11 +10,11 @@
         android:id="@+id/cRecycleView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentDrinkLabel" >
+        app:layout_constraintTop_toBottomOf="@+id/currentDrinkLabel">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -22,10 +22,10 @@
         android:id="@+id/piacon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="96dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="92dp"
         android:alpha="2"
-        android:background="#ff2456"
+        android:background="@color/transparent"
         android:padding="20sp"
         android:text="Huzd ide a piát!!!!"
         android:textSize="24sp"
@@ -36,7 +36,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginTop="28dp"
         android:text="Keverőpult"
         android:textColor="@color/black"
@@ -48,50 +49,40 @@
         android:id="@+id/currentDrinkLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="182dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="188dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="180dp"
         android:text="Köbi"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <LinearLayout
         android:id="@+id/pohar"
-        android:layout_width="300dp"
+        android:layout_width="294dp"
         android:layout_height="300dp"
         android:layout_marginStart="56dp"
         android:layout_marginBottom="50dp"
         android:gravity="bottom"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="352dp"
-        android:layout_height="371dp"
+        android:layout_width="392dp"
+        android:layout_height="385dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/pohar1" />
+        app:srcCompat="@drawable/korso1" />
 
-    <!--<rotate
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:fromDegrees="45"
-        android:toDegrees="45"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:duration="0"
-        android:startOffset="0"
-        />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

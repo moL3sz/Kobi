@@ -11,4 +11,5 @@
     <color name="burgundy">#C41111</color>
     <color name="blue">#0989EA</color>
     <color name="yellow">#FFD000</color>
+    <color name="transparent">#00000000</color>
 </resources>

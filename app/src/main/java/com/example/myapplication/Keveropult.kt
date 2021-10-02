@@ -42,7 +42,10 @@ import android.view.ViewGroup
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.R.attr.path
 
+import android.view.MotionEvent
+import com.google.android.material.chip.Chip
 
 lateinit var ezkellnekem : ImageView
 
@@ -64,6 +67,7 @@ public class Keveropult :AppCompatActivity(){
     lateinit var CIRCULAR_drinkSelector : CircularDrinkSelector
     lateinit var layoutManagerStoreFilter : LinearLayoutManager
     lateinit var currentLabelText : TextView
+    lateinit var bal_piatolto: Chip
 
     var touchDownX = 0
     var touchDownY = 0
@@ -97,7 +101,7 @@ public class Keveropult :AppCompatActivity(){
         //
         CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable, currentLabelText)
 
-        val snapHelper: SnapHelper = PagerSnapHelper()
+        val snapHelper: SnapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(drinkRecyclerView)
 
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector
@@ -181,6 +185,10 @@ public class Keveropult :AppCompatActivity(){
                         currentColor = "#ddaa55"
                         currentAlpha = 0.9f
                     }
+                    3 -> {
+                        currentColor = "#dddd55"
+                        currentAlpha = 0.9f
+                    }
                 }
                 isDone = false;
 
@@ -189,7 +197,6 @@ public class Keveropult :AppCompatActivity(){
 
                 rotate.repeatCount = Animation.INFINITE
                 rotate.interpolator = LinearInterpolator()
-
 
                 anim = ValueAnimator.ofInt(drinkOffset, pohar.height)
                 anim.addUpdateListener { valueAnimator ->
@@ -263,7 +270,6 @@ public class Keveropult :AppCompatActivity(){
                 false
             }
         }
-
     }
 }
 
@@ -342,6 +348,15 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
         return Int.MAX_VALUE
     }
 
+    fun onDoubleTap(e: MotionEvent): Boolean {
+        val x = e.x
+        val y = e.y
+
+        // clean drawing area on double tap
+        Log.d("Double Tap", "Tapped at: ($x,$y)")
+        return true
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
     inner class ViewHolderImage(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -372,5 +387,4 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
             e.printStackTrace()
         }
     }
-
 }
