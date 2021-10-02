@@ -40,13 +40,15 @@ import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import java.nio.channels.AsynchronousFileChannel.open
+import java.nio.channels.DatagramChannel.open
 import java.util.*
 import kotlin.collections.HashMap
 
 
 class _Request(ctx : AppCompatActivity){
     var contex : AppCompatActivity
-    val API_URL : String = "http://172.22.8.68:4000"
+    val API_URL : String = "http://172.22.8.113:4000"
     val queue  = Volley.newRequestQueue(ctx);
     init{
         contex = ctx;
@@ -68,7 +70,7 @@ class _Request(ctx : AppCompatActivity){
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                    },
+                    }   ,
                     Response.ErrorListener { error ->
                         Toast.makeText(contex, error.toString(), Toast.LENGTH_LONG).show()
                     }) {
@@ -116,6 +118,45 @@ class _Request(ctx : AppCompatActivity){
         catch (e: Exception){
             e.printStackTrace()
         }
+    }
+    fun getDrinkRequest(category : String,token: String) : List<JSONObject>{
+        lateinit var ret : List<JSONObject>;
+        var succedd = false;
+        try{
+            val stringRequest: StringRequest = object : StringRequest( Method.GET, API_URL + "/get_drinks/"+category,
+                Response.Listener { response ->
+                    try {
+                        val res = response.toString()
+
+                        Toast.makeText(contex, res,Toast.LENGTH_LONG).show()
+                        //itt fog visszakapni egy stringet (JSON formatba)
+                        //Ezeket után jöhet a koverzió a getJSONData függvénnyel
+                        succedd = true;
+                        ret = loadDrinksFromJSON(contex,res,false);
+                        Log.wtf("res2",succedd.toString());
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }   ,
+                Response.ErrorListener { error ->
+                    Toast.makeText(contex, error.toString(), Toast.LENGTH_LONG).show()
+                }) {
+                override fun getParams(): MutableMap<String, String> {
+                    val params : MutableMap<String,String> = HashMap();
+                    params["token"] = token;
+                    return params
+                }
+            }
+            queue.add(stringRequest)
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+        if(succedd){
+            Log.wtf("res3","YEES")
+            return  ret;
+        }
+        return  listOf<JSONObject>()
     }
 }
 class _Color(alpha: Int, colorCode : String){
@@ -271,14 +312,30 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     }
     return jsonString
 }
-fun loadColorsFromJson(context: Context): MutableList<_Color> {
-    var colors = mutableListOf<_Color>()
-    val gson = Gson()
-    val listColorType = object : TypeToken<List<_Color>>() {}.type
+fun loadDrinksFromJSON(ctx: Context, jsonS : String, debug : Boolean) : List<JSONObject> {
+    val arr = arrayListOf<JSONObject>()
 
-    colors = gson.fromJson(getJsonDataFromAsset(context,"colors.json"),listColorType)
-    colors.forEachIndexed { idx, person -> Log.wtf("data", "> Item $idx:\n$person") }
-    return colors
+    val jsonString : String;
+    try{
+        if(debug){
+            val iS : InputStream =ctx.assets.open("test_drinks.json")
+            jsonString = iS.bufferedReader().use { it.readText() }
+        }
+        else{
+            jsonString = jsonS;
+        }
+        val jsonArr = JSONArray(jsonString)
+        for(i in 0 until jsonArr.length()){
+            val jo = jsonArr.getJSONObject(i)
+            arr.add(jo)
+        }
+        return arr;
+    }
+    catch (e : IOException){
+        e.printStackTrace();
+    }
+    Log.wtf("error","rossz")
+    return listOf<JSONObject>()
 }
 
 
