@@ -43,13 +43,10 @@ import android.view.ViewGroup
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
-<<<<<<< HEAD
 import android.R.attr.path
-=======
 import android.os.AsyncTask
 import android.util.JsonReader
 import org.json.JSONObject
->>>>>>> 4891bef09621bf624ab97a033212bc7762681282
 
 import android.view.MotionEvent
 import com.google.android.material.chip.Chip

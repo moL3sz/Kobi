@@ -10,14 +10,7 @@
         android:id="@+id/cRecycleView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-<<<<<<< HEAD
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-=======
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
         android:layout_marginEnd="4dp"
->>>>>>> 4891bef09621bf624ab97a033212bc7762681282
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
