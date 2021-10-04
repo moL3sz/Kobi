@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="kever_pult">Keverőpult</string>
+    <string name="achievements"><u><b>Achivements</b></u></string>
+    <string name="friends"><u><b>Friends</b></u></string>
+    <string name="haviital"><u><b>Havi legjobb italok</b></u></string>
 </resources>

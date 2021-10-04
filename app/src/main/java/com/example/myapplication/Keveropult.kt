@@ -136,7 +136,7 @@ public class Keveropult :AppCompatActivity(){
         //
         CIRCULAR_drinkSelector = CircularDrinkSelector(this, drinkListDrawable, currentLabelText)
 
-        val snapHelper: SnapHelper = LinearSnapHelper()
+        val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(drinkRecyclerView)
 
         drinkRecyclerView.adapter = CIRCULAR_drinkSelector

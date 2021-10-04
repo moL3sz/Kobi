@@ -1,19 +1,28 @@
 from logging import debug
 from os import abort
 from flask import Flask, request, url_for
-from security.hash import compareHashPassword, hashPassword
+from security.hash import compareHashPassword, hashPasswordn 
 from security.tokenAuth import loginUser
 from security.tokenAuth import hasToke
-from dbManager import addUser
+from dbManager import addUser,addToken
 import json
 
 
 
 app = Flask(__name__)
-
-
-
 #endpoints
+
+
+
+@app.route("/add_token/<token:string>",methods=["POST"])
+def addTokenToDb(token):
+    try:
+        addToken(token)
+        return "200"
+    except Exception as e:
+        return "500"
+    return "400"
+
 @app.route("/get_drinks/<category>",methods=["GET"])
 def getDrinks(category):
     try:
@@ -35,10 +44,6 @@ def getDrinks(category):
     except Exception as e:
         raise e
     return "200"
-
-
-
-
 @app.route("/login",methods=["POST"])
 def login():
     try:

@@ -1,7 +1,18 @@
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title=""/>
-    <item android:title="Tevékenységek:"/>
-    <item android:title="Keverőpult"
-        android:id="@+id/toKeverpult" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title="Alkalmazások:">
+        <menu>
+            <item android:title="Keverőpult"
+                android:id="@+id/toKeverpult"
+                android:icon="@drawable/ic_round_science_24"/>
+            <item android:title="Kocsma kereső"/>
+            <item android:title="Ivás harc"/>
+        </menu>
+    </item>
+    <item android:title="Rólunk" />
+    <item android:title="Támogatás"/>
+    <item android:title="Beállítások" />
+
 </menu>

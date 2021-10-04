@@ -28,14 +28,40 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
+
                 app:srcCompat="@drawable/ic_round_menu_24"
                 app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Köbi app"
+                android:gravity="center_horizontal|center_vertical"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_lay">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:text="@string/haviital"
+                android:paddingTop="20dp"
+                android:textSize="25dp"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -44,55 +70,15 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemHorizontalPadding="20dp"
+        app:itemIconPadding="10dp"
+        app:itemIconSize="30dp"
+        app:itemMaxLines="5"
+        app:itemTextAppearance="@style/Widget.Support.CoordinatorLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:itemMaxLines="5"
-        app:itemIconPadding="10dp"
-        app:itemHorizontalPadding="20dp"
-        app:itemIconSize="30dp"
-        app:itemTextAppearance="@style/Widget.Support.CoordinatorLayout"
-        app:menu="@menu/navigation_menu" >
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#E43535"
-            android:paddingBottom="10dp"
-            >
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/avatar" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="20dp">
-                <TextView
-                    android:textColor="@color/white"
-                    android:id="@+id/profil_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Saját profil"
-                    android:layout_weight="10"
-
-                    android:paddingTop="5dp"
-                    android:textSize="22sp"/>
-
-                <TextView
-                    android:textColor="@color/white"
-                    android:id="@+id/textView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:text="Molnar Kristof" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
+        app:menu="@menu/navigation_menu"
+        app:headerLayout="@layout/profil_menu_item_layout"
+        android:background="">
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

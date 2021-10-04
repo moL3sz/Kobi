@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication   
 
 import android.content.ClipData
 import android.content.Intent
@@ -33,6 +33,8 @@ class MainPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedList
     }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+                //options for menu
+                // attól függ hogy mire kattintasz
             R.id.toKeverpult->{
                 val intent = Intent(this,Keveropult::class.java)
                 startActivity(intent)

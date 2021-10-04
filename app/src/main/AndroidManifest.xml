@@ -41,7 +41,7 @@
         <activity
             android:name=".Keveropult"
             android:exported="true"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="nosensor"
             android:label="s"
             >
 
