@@ -30,12 +30,10 @@ def getUserByUsername(username):
 
 def addToken(token,username):
     #check if user has exists with token
-    currentUser = getUserByUsername(user)
+    currentUser = getUserByUsername(username)
     if currentUser:
         if currentUser[4] == "":
             pass
-        if currentUser  
-
 
     else:
         return

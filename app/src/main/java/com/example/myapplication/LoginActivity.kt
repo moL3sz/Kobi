@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
@@ -30,7 +31,12 @@ class LoginActivity : AppCompatActivity(){
             val req = _Request(this)
             val username = findViewById<EditText>(R.id.loginInput).text.toString()
             val password = findViewById<EditText>(R.id.passwordInput).text.toString()
-            req.loginRequest(username = username, password = password, token = "TOken")
+            val response : Boolean = req.loginRequest(username = username, password = password, token = "TOken")
+            Toast.makeText(this,response.toString(),Toast.LENGTH_LONG).show()
+            if(response){
+                val intent = Intent(this,MainPage::class.java);
+                startActivity(intent)
+            }
             //Le kapjuk a input fieldeknek az értékeit
             //val email = findViewById<EditText>(R.id.loginInput).text.toString()
            // val password = findViewById<EditText>(R.id.passwordInput).text.toString()

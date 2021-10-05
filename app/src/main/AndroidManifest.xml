@@ -33,8 +33,7 @@
         <activity
             android:name=".RegistrationActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
-            >
+            android:screenOrientation="fullSensor">
 
         </activity>
 
@@ -46,6 +45,7 @@
             >
 
         </activity>
+
     </application>
 
 </manifest>

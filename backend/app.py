@@ -1,28 +1,19 @@
 from logging import debug
 from os import abort
 from flask import Flask, request, url_for
-from security.hash import compareHashPassword, hashPasswordn 
+from security.hash import compareHashPassword, hashPassword
 from security.tokenAuth import loginUser
 from security.tokenAuth import hasToke
-from dbManager import addUser,addToken
+from dbManager import addUser
 import json
 
 
 
 app = Flask(__name__)
+
+
+
 #endpoints
-
-
-
-@app.route("/add_token/<token:string>",methods=["POST"])
-def addTokenToDb(token):
-    try:
-        addToken(token)
-        return "200"
-    except Exception as e:
-        return "500"
-    return "400"
-
 @app.route("/get_drinks/<category>",methods=["GET"])
 def getDrinks(category):
     try:
@@ -33,23 +24,29 @@ def getDrinks(category):
 
 
         print(category)
-        #call a db function to get all the drinks according the category id
-        # * means all
-
         drinkJSON = json.load(open("test_drinks.json","r"))
-        print(str(drinkJSON))
         return str(drinkJSON)
         #return "202"
         pass
     except Exception as e:
         raise e
     return "200"
+
+
+
+
+
+@app.route("/")
+def index():
+    return "<h1>Szia lajos</h1>"
 @app.route("/login",methods=["POST"])
 def login():
     try:
         pass
+        print(request.form)
         username = request.form["username"]
         password = request.form["password"]
+        print(username,password)
         return "200" if loginUser("asf",username,password) else "403"
     except Exception as e:
         abort(500)
@@ -77,6 +74,3 @@ def registrate():
         return "500"
     pass
     return "200"
-if __name__ == "__main__":
-    print("Server started running!")
-    app.run(debug=True,host="172.22.8.113", port=4000)

@@ -244,6 +244,7 @@ public class Keveropult :AppCompatActivity(){
 
                 ezkellnekem.startAnimation(rotate)
 
+
                 pohar.addView(newLayer, 0)
                 anim.start()
 

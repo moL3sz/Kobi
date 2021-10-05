@@ -48,15 +48,17 @@ import kotlin.collections.HashMap
 
 class _Request(ctx : AppCompatActivity){
     var contex : AppCompatActivity
-    val API_URL : String = "http://172.22.8.113:4000"
+    val API_URL : String = "https://kobi-mobil-app.herokuapp.com"
     val queue  = Volley.newRequestQueue(ctx);
     init{
         contex = ctx;
     }
     @RequiresApi(Build.VERSION_CODES.M)
     fun loginRequest(username: String, password: String, token: String) : Boolean{
+        var loggedIn : Boolean = false;
         try{
-            val stringRequest: StringRequest = object : StringRequest( Method.POST, API_URL + "/login",
+            val stringRequest: StringRequest = object : StringRequest( Method.POST,
+                "$API_URL/login",
                     Response.Listener { response ->
                         try {
                             val res = response.toString()
@@ -83,11 +85,14 @@ class _Request(ctx : AppCompatActivity){
                 }
             }
             queue.add(stringRequest)
+            return loggedIn
         }
+
         catch (e: Exception){
             e.printStackTrace()
         }
         return false
+
 
     }
     fun registrateRequest(username: String, password: String, token: String, email : String){
@@ -118,6 +123,7 @@ class _Request(ctx : AppCompatActivity){
         catch (e: Exception){
             e.printStackTrace()
         }
+
     }
     fun getDrinkRequest(category : String,token: String) : List<JSONObject>{
         lateinit var ret : List<JSONObject>;
