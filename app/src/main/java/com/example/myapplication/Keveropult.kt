@@ -44,12 +44,15 @@ import android.view.ViewGroup
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.R.attr.path
+import android.app.ActionBar
+import android.content.Intent
 import android.os.AsyncTask
 import android.util.JsonReader
 import org.json.JSONObject
 
 import android.view.MotionEvent
 import com.google.android.material.chip.Chip
+import com.google.android.material.navigation.NavigationView
 
 @SuppressLint("StaticFieldLeak")
 lateinit var ezkellnekem : ImageView
@@ -61,15 +64,11 @@ private val labelList = mutableListOf<String>(
     "Koccintós bor"
 )
 
-public class Keveropult :AppCompatActivity(){
-
-
+public class Keveropult :AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
 
     lateinit var colorList : MutableList<_Color>
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
-
-
 
     lateinit var drinkObjects : List<JSONObject>;
     //global vars in class
@@ -103,9 +102,6 @@ public class Keveropult :AppCompatActivity(){
             val drinkName = drinks[i]+".jpg"
             drinkListDrawable.add(getDrawableByName(this,drinkName))
         }*/
-        val req = _Request(this)
-        drinkObjects = req.getDrinkRequest("*","asd"    )
-        Log.wtf("res1",drinkObjects.toString())
 
 
 
@@ -151,6 +147,8 @@ public class Keveropult :AppCompatActivity(){
 
         //swipe check
 
+        val navMenu = findViewById<NavigationView>(R.id.keszlet)
+        navMenu?.setNavigationItemSelectedListener (this)
     }
 
     var layerCount = 0
@@ -180,10 +178,11 @@ public class Keveropult :AppCompatActivity(){
         val receiverView:TextView = v as TextView
         var drinkOffset = 0;
         var currentLayer : TextView
+        val tolto = findViewById<View>(R.id.piahelye) as ImageView
 
         val rotate = RotateAnimation(
-            45F,
-            45F,
+            -60F,
+            -60F,
             Animation.RELATIVE_TO_SELF,
             0.5f,
             Animation.RELATIVE_TO_SELF,
@@ -242,7 +241,10 @@ public class Keveropult :AppCompatActivity(){
                 }
                 anim.duration = 2000
 
-                ezkellnekem.startAnimation(rotate)
+                //Az aktuális pia képe, amiből éppen töltünk
+                val tolto = findViewById<View>(R.id.piahelye) as ImageView
+                tolto.setImageDrawable(ezkellnekem.drawable)
+                tolto.startAnimation(rotate)
 
 
                 pohar.addView(newLayer, 0)
@@ -263,7 +265,8 @@ public class Keveropult :AppCompatActivity(){
 
                 //stop the scaling thread -> nem nő tovább a pina (pia)
                 UIThreadScaleDrink.cancel()
-                ezkellnekem.clearAnimation()
+                tolto.clearAnimation()
+                tolto.setImageResource(0)
                 receiverView.text = "Huzd ide a piát!"
                 v.invalidate()
                 true
@@ -273,7 +276,8 @@ public class Keveropult :AppCompatActivity(){
                 anim.cancel()
                 drinkOffset += pohar.getChildAt(0).height
 
-                ezkellnekem.clearAnimation()
+                tolto.clearAnimation()
+                tolto.setImageResource(0)
                 true
             }
 
@@ -285,13 +289,14 @@ public class Keveropult :AppCompatActivity(){
                 v.invalidate()
                 when (event.result) {
                     true -> {
-                        ezkellnekem.clearAnimation()
+                        tolto.clearAnimation()
+                        tolto.setImageResource(0)
                         receiverView.text = "Vissza raktad!"
                     }
                     // drop was handled
                     else -> {
                         //
-                        ezkellnekem.clearAnimation()
+                        tolto.clearAnimation()
                         receiverView.text = "Vissza raktad!"
                     }
                 }
@@ -302,6 +307,18 @@ public class Keveropult :AppCompatActivity(){
                 false
             }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val pohar: ImageView = findViewById(R.id.valtozopohar)
+        when(item.itemId){
+            //options for menu
+            // attól függ hogy mire kattintasz
+            R.id.legyenkorso->{
+                pohar.setImageResource(R.drawable.korso1)
+            }
+        }
+        return  super.onOptionsItemSelected(item)
     }
 }
 
@@ -380,7 +397,6 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
     fun onDoubleTap(e: MotionEvent): Boolean {
         val x = e.x
         val y = e.y
-
         // clean drawing area on double tap
         Log.d("Double Tap", "Tapped at: ($x,$y)")
         return true
@@ -405,7 +421,6 @@ class CircularDrinkSelector(context: Context, list2: List<Int>, drinkLabel : Tex
             }
         }
     }
-
     init {
         try {
             this.drinkLabel = drinkLabel

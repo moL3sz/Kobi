@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/expanded_menu"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
 
                 app:srcCompat="@drawable/ic_round_menu_24"
@@ -63,8 +63,8 @@
                 android:paddingTop="20dp"
                 android:textSize="25dp"/>
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navview"
         android:layout_width="wrap_content"

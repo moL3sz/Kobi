@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title="Italok:">
+        <menu>
+            <item android:title="Ide fogjuk bedarálni az ital típusokat"/>
+        </menu>
+    </item>
+    <item android:title="Poharak">
+        <menu>
+            <item android:title="Korsó (0,5l)"
+                  android:id="@+id/legyenkorso"/>
+            <item android:title="Pohár (0,3l)"/>
+            <item android:title="Feles (0,4dl)"/>
+        </menu>
+    </item>
+    <item android:title="Kiegészítők">
+        <menu>
+            <item android:title="Jég"/>
+            <item android:title="Napernyő"/>
+            <item android:title="Citrom"/>
+            <item android:title="Fahéj"/>
+            <item android:title="Stb..."/>
+        </menu>
+    </item>
+</menu>
